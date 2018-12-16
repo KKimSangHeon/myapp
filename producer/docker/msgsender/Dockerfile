@@ -9,7 +9,7 @@ RUN unzip /tmp/install/wlp-webProfile7-17.0.0.3.zip -d /root
 RUN /root/wlp/bin/server create
 RUN rm -f /tmp/install/wlp-webProfile7-17.0.0.3.zip
 
-ADD msgsender.war /root/wlp/usr/servers/defaultServer/dropins
+ADD msgsender.war /root/wlp/usr/servers/defaultServer/apps
 ADD server.xml /root/wlp/usr/servers/defaultServer
 
 #RUN mkdir -p /root/wlp/usr/servers/defaultServer/jdbc
