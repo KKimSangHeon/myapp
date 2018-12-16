@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+}
+
+apply plugin: 'war'
+
+
+description = """msgsender"""
+war.archiveName "msgsender.war"
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
+//    libertyRuntime group: 'io.openliberty', name: 'openliberty-runtime', version: '[17.0.0.4,)'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.1.0'
+    compile 'log4j:log4j:1.2.17'
+    compile 'org.slf4j:slf4j-log4j12:1.7.21'
+    compile 'org.slf4j:slf4j-api:1.7.21'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.8.5'
+    compile group: 'redis.clients', name: 'jedis', version: '3.0.0'
+
+}
+
+war {
+    from('resources'){
+        include '*'
+        into "resources"
+    }
+    from('src/main/resources'){
+        include '*'
+        into "WEB-INF/lib"
+    }
+    from('lib'){
+        include '*'
+        into "WEB-INF/lib"
+    }
+    from('log4j'){
+        include '*'
+        into "WEB-INF/classes"
+    }
+
+}
+
+task copywar {
+    copy {
+        from "$projectDir/build/libs/msgsender.war"
+        into "$projectDir/docker/"
+    }
+}
