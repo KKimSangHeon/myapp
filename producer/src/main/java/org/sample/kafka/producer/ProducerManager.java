@@ -2,6 +2,7 @@ package org.sample.kafka.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sample.messagehub.core.GroupInfo;
 import com.sample.messagehub.core.MessageHubContext;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -72,8 +73,8 @@ public class ProducerManager {
 
     }
 
-/*    public static void sendLotMsgs(String topic, int lotCnt, int actCnt) throws JsonProcessingException, UnknownHostException {
-        List<LotInfo> msg = createMsgs(lotCnt, actCnt);
+    public static void sendGroupMsgs(String topic, int groupCnt, int actCnt) throws JsonProcessingException, UnknownHostException {
+        List<GroupInfo> msg = createMsgs(groupCnt, actCnt);
 
         long offset=-1;
 
@@ -82,31 +83,31 @@ public class ProducerManager {
 
         int msgCnt=0;
 
-        for(LotInfo lot : msg) {
+        for(GroupInfo lot : msg) {
 
 
             try {
 
-                int key_num = lot.getLotId() % num_partitions;
+                int key_num = lot.getGroupId() % num_partitions;
 
                 lot.setPartitionId(key_num);
                 String message = new ObjectMapper().writeValueAsString(lot);
-                ProducerRecord<Long, String> record = new ProducerRecord<Long, String>(topic, key_num, Long.valueOf(lot.getLotId()), message);
+                ProducerRecord<Long, String> record = new ProducerRecord<Long, String>(topic, key_num, Long.valueOf(lot.getGroupId()), message);
 
 //				Future<RecordMetadata> future = kafkaProducer.send(record);
 //				RecordMetadata recordMetadata = future.get(5000, TimeUnit.MILLISECONDS);
 
                 try {
                     offset = kafkaProducer.send(record).get().offset();
-                    DBUtil.insertSendLog(lot);
-                    logger.info("[ LOT / ACT ] : " + lot.getLotId() + " / " + lot.getActId());
+//                    DBUtil.insertSendLog(lot);
+                    logger.info("[ LOT / ACT ] : " + lot.getGroupId() + " / " + lot.getActId());
                     msgCnt++;
 
                 }catch(Exception ex) {
                     logger.info("Send message faild " + ex.getMessage());
                     if(offset < 0) {
                         logger.info("Send message faild : resend lot data " + message);
-                        ProducerRecord<Long, String> record2 = new ProducerRecord<Long, String>(topic, key_num, Long.valueOf(lot.getLotId()), message);
+                        ProducerRecord<Long, String> record2 = new ProducerRecord<Long, String>(topic, key_num, Long.valueOf(lot.getGroupId()), message);
                     }
                 }
 
@@ -133,44 +134,44 @@ public class ProducerManager {
 
     }
 
-    public static List<LotInfo> createMsgs(int lotCnt, int actCnt) throws UnknownHostException {
-        List<LotInfo> msgs = new ArrayList<LotInfo>(lotCnt * actCnt);
+    public static List<GroupInfo> createMsgs(int groupCnt, int actCnt) throws UnknownHostException {
+        List<GroupInfo> msgs = new ArrayList<GroupInfo>(groupCnt * actCnt);
         String hostname = InetAddress.getLocalHost().getHostName();
         String[] splittedHostname = hostname.split("-");
         String appInst = splittedHostname[splittedHostname.length -1];
         logger.info(hostname);
 
 
-        for(int i=0;i<lotCnt;i++) {
+        for(int i=0;i<groupCnt;i++) {
             for(int j=0;j<actCnt;j++) {
-                LotInfo lot = new LotInfo(i+1);
+                GroupInfo lot = new GroupInfo(i+1);
                 msgs.add(lot);
             }
         }
 
         msgs = shuffleLot(msgs);
 
-        List<Integer> lots = new ArrayList<Integer>(lotCnt);
-        for(int i=0 ; i< lotCnt; i++) {
+        List<Integer> lots = new ArrayList<Integer>(groupCnt);
+        for(int i=0 ; i< groupCnt; i++) {
             lots.add(i, 1);
         }
 
-        for(LotInfo lotinfo : msgs) {
-            int lotId = lotinfo.getLotId();
+        for(GroupInfo GroupInfo : msgs) {
+            int lotId = GroupInfo.getGroupId();
             int actId = lots.get(lotId -1);
-            lotinfo.setActId(actId);
+            GroupInfo.setActId(actId);
             //			lots.add(lotId -1, actId+1);
             lots.set(lotId-1, actId+1);
 
-            lotinfo.setApp("sender");
-            lotinfo.setApp_inst(hostname.split("-")[2]);
+            GroupInfo.setApp("sender");
+            GroupInfo.setApp_inst(hostname.split("-")[2]);
 
         }
 
         return msgs;
     }
 
-    public static List<LotInfo> shuffleLot(List<LotInfo> msgs) {
+    public static List<GroupInfo> shuffleLot(List<GroupInfo> msgs) {
 
         Collections.shuffle(msgs);
 
@@ -179,14 +180,14 @@ public class ProducerManager {
 
     public static void main(String[] args) throws Exception {
 
-        List<LotInfo> msgs = ProducerManager.createMsgs(3, 20);
+        List<GroupInfo> msgs = ProducerManager.createMsgs(3, 20);
 
-        for(LotInfo lot : msgs) {
-            logger.info("LOT ID : " + lot.getLotId() + " , ACT ID : " + lot.getActId());
+        for(GroupInfo lot : msgs) {
+            logger.info("LOT ID : " + lot.getGroupId() + " , ACT ID : " + lot.getActId());
         }
 
     }
-  */
+
 
 //    public static String getBrokerList() throws Exception {
 //

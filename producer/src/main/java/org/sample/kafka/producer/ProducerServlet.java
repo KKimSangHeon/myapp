@@ -24,24 +24,18 @@ public class ProducerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String msg = req.getParameter("msg");
+        String groupCnt = req.getParameter("groupCnt");
+        String actCnt = req.getParameter("actCnt");
         Properties props = MessageHubContext.getServerProperties();
 
         String topic = props.getProperty("topic");
         KafkaProducer producer = null;
 
-
-        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-        JedisPool pool = new JedisPool(jedisPoolConfig, "redis-ibm-redis-ha-dev-master-svc.kafka.svc.cluster.local");
-//        Jedis jedis = new Jedis("redis-ibm-redis-ha-dev-master-svc.kafka.svc.cluster.local:6379");
-
-        Jedis jedis = pool.getResource();
-        jedis.set("100", msg);
-
-        String cachedStr = jedis.get("100");
-
-        logger.info("Cached message is " + cachedStr);
-
-
+        if(isNull(groupCnt) && isNull(actCnt)) {
+            ProducerManager.sendGroupMsgs(topic, 3, 20);
+        }else {
+            ProducerManager.sendGroupMsgs(topic, Integer.valueOf(groupCnt), Integer.valueOf(actCnt));
+        }
 
         try {
             producer = ProducerManager.getProducer(MessageHubContext.getProducerProperties(), topic);
@@ -50,5 +44,16 @@ public class ProducerServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+    }
+
+    private boolean isNull(String data) {
+
+        boolean isNull = false;
+
+        if("".equalsIgnoreCase(data) || data == null) {
+            isNull = true;
+        }
+
+        return isNull;
     }
 }
