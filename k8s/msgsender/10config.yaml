@@ -1,7 +1,7 @@
 kind: ConfigMap
 metadata:
   name: msgsenderconfig
-  namespace: kafka
+  namespace: myapp
 apiVersion: v1
 data:
     k8s.messagehub.producer.properties: |-

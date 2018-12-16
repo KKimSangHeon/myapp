@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mariadb-pv-claim
-  namespace: kafka
+  namespace: myapp
 spec:
   accessModes:
     - ReadWriteOnce

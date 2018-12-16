@@ -54,6 +54,6 @@ war {
 task copywar {
     copy {
         from "$projectDir/build/libs/msgsender.war"
-        into "$projectDir/docker/"
+        into "$projectDir/docker/msgsender"
     }
 }

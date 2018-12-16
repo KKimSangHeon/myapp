@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: msgsender
-  namespace: kafka
+  namespace: myapp
   labels:
     app: msgsender
 spec:

@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: loaddata
-  namespace: kafka
+  namespace: myapp
 spec:
   backoffLimit: 1
   template:

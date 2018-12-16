@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: mariadb-vl-1
-  namespace: kafka
+  namespace: myapp
   labels:
     type: local
 spec:
