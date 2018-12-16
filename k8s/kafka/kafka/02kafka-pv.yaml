@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kfbk-1
+  namespace: kafka
+  labels:
+    semi-sys: infraees
+    app-role: pv
+    app-type: bk
+    type: local
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /kafka/kfbk-1
+  persistentVolumeReclaimPolicy: Recycle
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kfbk-2
+  namespace: kafka
+  labels:
+    app-grp: kafka
+    app-role: pv
+    app-type: bk
+    type: local
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /kafka/kfbk-2
+  persistentVolumeReclaimPolicy: Recycle
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kfbk-3
+  namespace: kafka
+  labels:
+    app-grp: kafka
+    app-role: pv
+    app-type: bk
+    type: local
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /kafka/kfbk-3
+  persistentVolumeReclaimPolicy: Recycle
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kfbk-4
+  namespace: kafka
+  labels:
+    app-grp: kafka
+    app-role: pv
+    app-type: bk
+    type: local
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /kafka/kfbk-4
+  persistentVolumeReclaimPolicy: Recycle
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kfbk-5
+  namespace: kafka
+  labels:
+    app-grp: kafka
+    app-role: pv
+    app-type: bk
+    type: local
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /kafka/kfbk-5
+  persistentVolumeReclaimPolicy: Recycle

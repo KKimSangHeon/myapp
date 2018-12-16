@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: loaddata
+  namespace: kafka
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      name: loaddata
+    spec:
+      restartPolicy: "Never"
+      containers:
+      - name: loaddata
+        image: mycluster.icp:8500/kafka/loaddata
+        imagePullPolicy: Always
+        env:
+        - name: DB_HOST
+          value: mariadb.kafka.svc.cluster.local
+        command: ["sh", "-c", "cat /root/myapp.sql | mysql -h $DB_HOST -u root -ppassw0rd"]

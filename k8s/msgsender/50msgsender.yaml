@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msgsender
+  namespace: kafka
+  labels:
+    app: msgsender
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msgsender
+  template:
+    metadata:
+      labels:
+        app: msgsender
+    spec:
+      containers:
+      - name: msgsender
+        image: mycluster.icp:8500/kafka/msgsender
+        env:
+        - name: MESSAGE_RUN_ENV
+          value: k8s
+        ports:
+        - containerPort: 9080
+        volumeMounts:
+        - name: config
+          mountPath: /etc/kafka
+      volumes:
+      - name: config
+        configMap:
+          name: msgsenderconfig
