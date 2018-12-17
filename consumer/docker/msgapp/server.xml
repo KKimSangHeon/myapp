@@ -27,5 +27,6 @@
 
     <!-- Automatically expand WAR files and EAR files -->
     <applicationManager autoExpand="true"/>
+    <webContainer deferServletLoad="false"/>
     <application context-root="/" type="war" id="msgapp" location="msgapp.war" name="msgapp"/>
 </server>

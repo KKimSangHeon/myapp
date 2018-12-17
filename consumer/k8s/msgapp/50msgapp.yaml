@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msgapp
+  namespace: myapp
+  labels:
+    app: msgapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msgapp
+  template:
+    metadata:
+      labels:
+        app: msgapp
+    spec:
+      containers:
+      - name: msgapp
+        image: mycluster.icp:8500/myapp/msgapp
+        env:
+        - name: MESSAGEHUB_RUN_ENV
+          value: k8s
+        ports:
+        - containerPort: 9080
+        volumeMounts:
+        - name: config
+          mountPath: /etc/kafka
+      volumes:
+      - name: config
+        configMap:
+          name: msgappconfig
