@@ -17,9 +17,9 @@ spec:
     spec:
       containers:
       - name: msgsender
-        image: mycluster.icp:8500/kafka/msgsender
+        image: mycluster.icp:8500/myapp/msgsender
         env:
-        - name: MESSAGE_RUN_ENV
+        - name: MESSAGEHUB_RUN_ENV
           value: k8s
         ports:
         - containerPort: 9080

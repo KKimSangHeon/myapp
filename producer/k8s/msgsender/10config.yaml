@@ -5,12 +5,12 @@ metadata:
 apiVersion: v1
 data:
     k8s.messagehub.producer.properties: |-
-      bootstrap.servers=bootstrap.kafka.svc.cluster.local:9092
+      bootstrap.servers=bootstrap.myapp.svc.cluster.local:9092
       group.id=test_g1
       key.serializer=org.apache.kafka.common.serialization.LongSerializer
       value.serializer=org.apache.kafka.common.serialization.StringSerializer
     k8s.messagehub.server.properties: |-
-      topic=testing
+      topic=myapp
       kafka.brokerlist.fromzookeeper=false
       redis.host=redis-ibm-redis-ha-dev-master-svc.kafka.svc.cluster.local
       redis.port=6379

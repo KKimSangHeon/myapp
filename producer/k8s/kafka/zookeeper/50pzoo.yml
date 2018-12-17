@@ -86,6 +86,7 @@ spec:
           app-grp: kafka
           app-role: pv
           app-type: pzoo
+          type: local
       resources:
         requests:
           storage: 1Gi

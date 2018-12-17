@@ -1,7 +1,7 @@
 #/bin/sh
 
 
-rm msgapp.tar
+#rm msgapp.tar
 
 version=latest
 if [ $# -eq 1 ]
@@ -9,9 +9,10 @@ if [ $# -eq 1 ]
     version=$1
 fi
 
-IMAGENAME=mycluster.icp:8500/kafka/msgapp:$version
+IMAGENAME=mycluster.icp:8500/myapp/msgapp:$version
 #gradle build && gradle build war
 docker build -t $IMAGENAME .
-docker save -o msgapp.tar $IMAGENAME
-scp msgapp.tar root@10.10.80.172:/root/mjkong/msgapp
-#docker push mycluster.icp:8500/semi/sender:$version
+#docker save -o msgapp.tar $IMAGENAME
+#scp msgapp.tar root@10.10.80.172:/root/mjkong/msgapp
+docker login mycluster.icp:8500 -u admin -p admin
+docker push mycluster.icp:8500/myapp/msgapp:$version
