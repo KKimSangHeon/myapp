@@ -13,6 +13,15 @@
         <user name="admin" password="admin" />
     </basicRegistry>
 
+      <dataSource id="DefaultDataSource" jndiName="jdbc/mysqlDB">
+    <jdbcDriver libraryRef="MySQLLib"/>
+    <properties databaseName="myapp" password="passw0rd" portNumber="3306" serverName="mysql" user="user1"/>
+  </dataSource>
+
+  <library id="MySQLLib">
+    <file name="${server.config.dir}/jdbc/mysql-connector-java-5.1.44-bin.jar"/>
+  </library>
+
     <!-- To allow access to this server from a remote client host="*" has been added to the following element -->
     <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="9080" httpsPort="9443" />
 

@@ -4,7 +4,6 @@ metadata:
   name: kfbk-1
   namespace: myapp
   labels:
-    semi-sys: infraees
     app-role: pv
     app-type: bk
     type: local
