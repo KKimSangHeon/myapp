@@ -26,6 +26,7 @@
     <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="9080" httpsPort="9443" />
 
     <!-- Automatically expand WAR files and EAR files -->
+    <webContainer deferServletLoad="false"/>
     <applicationManager autoExpand="true"/>
     <application context-root="/" type="war" id="msgapp" location="msgapp.war" name="msgapp"/>
 </server>

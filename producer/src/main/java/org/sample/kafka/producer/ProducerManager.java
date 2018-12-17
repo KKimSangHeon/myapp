@@ -83,16 +83,16 @@ public class ProducerManager {
 
         int msgCnt=0;
 
-        for(GroupInfo lot : msg) {
+        for(GroupInfo group : msg) {
 
 
             try {
 
-                int key_num = lot.getGroupId() % num_partitions;
+                int key_num = group.getGroupId() % num_partitions;
 
-                lot.setPartitionId(key_num);
-                String message = new ObjectMapper().writeValueAsString(lot);
-                ProducerRecord<Long, String> record = new ProducerRecord<Long, String>(topic, key_num, Long.valueOf(lot.getGroupId()), message);
+                group.setPartitionId(key_num);
+                String message = new ObjectMapper().writeValueAsString(group);
+                ProducerRecord<Long, String> record = new ProducerRecord<Long, String>(topic, key_num, Long.valueOf(group.getGroupId()), message);
 
 //				Future<RecordMetadata> future = kafkaProducer.send(record);
 //				RecordMetadata recordMetadata = future.get(5000, TimeUnit.MILLISECONDS);
@@ -100,14 +100,14 @@ public class ProducerManager {
                 try {
                     offset = kafkaProducer.send(record).get().offset();
 //                    DBUtil.insertSendLog(lot);
-                    logger.info("[ LOT / ACT ] : " + lot.getGroupId() + " / " + lot.getActId());
+                    logger.info("[ GROUP / ACT ] : " + group.getGroupId() + " / " + group.getActId());
                     msgCnt++;
 
                 }catch(Exception ex) {
                     logger.info("Send message faild " + ex.getMessage());
                     if(offset < 0) {
                         logger.info("Send message faild : resend lot data " + message);
-                        ProducerRecord<Long, String> record2 = new ProducerRecord<Long, String>(topic, key_num, Long.valueOf(lot.getGroupId()), message);
+                        ProducerRecord<Long, String> record2 = new ProducerRecord<Long, String>(topic, key_num, Long.valueOf(group.getGroupId()), message);
                     }
                 }
 
@@ -157,11 +157,11 @@ public class ProducerManager {
         }
 
         for(GroupInfo GroupInfo : msgs) {
-            int lotId = GroupInfo.getGroupId();
-            int actId = lots.get(lotId -1);
+            int groupId = GroupInfo.getGroupId();
+            int actId = lots.get(groupId -1);
             GroupInfo.setActId(actId);
             //			lots.add(lotId -1, actId+1);
-            lots.set(lotId-1, actId+1);
+            lots.set(groupId-1, actId+1);
 
             GroupInfo.setApp("sender");
             GroupInfo.setApp_inst(hostname.split("-")[2]);
@@ -183,7 +183,7 @@ public class ProducerManager {
         List<GroupInfo> msgs = ProducerManager.createMsgs(3, 20);
 
         for(GroupInfo lot : msgs) {
-            logger.info("LOT ID : " + lot.getGroupId() + " , ACT ID : " + lot.getActId());
+            logger.info("GROUP ID : " + lot.getGroupId() + " , ACT ID : " + lot.getActId());
         }
 
     }

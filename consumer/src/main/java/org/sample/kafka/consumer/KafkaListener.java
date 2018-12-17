@@ -26,7 +26,7 @@ public class KafkaListener implements ServletContextListener {
 
         try {
             consumerRunnable = new ConsumerRunnable(MessageHubContext.getConsumerProperties().getProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG),
-                    MessageHubContext.getServerProperties().getProperty("consumer.topic"));
+                    MessageHubContext.getServerProperties().getProperty("topic"));
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -28,22 +28,26 @@ public class ProducerServlet extends HttpServlet {
         String actCnt = req.getParameter("actCnt");
         Properties props = MessageHubContext.getServerProperties();
 
+        logger.info("msg : \'" + msg + "\', groupCnt : \'" + groupCnt + "\' , actCnt : \'" + actCnt + '\'');
         String topic = props.getProperty("topic");
         KafkaProducer producer = null;
 
+        try{
+            producer = ProducerManager.getProducer(MessageHubContext.getProducerProperties(), topic);
+        }catch (Exception e){
+           e.printStackTrace();
+        }
+
         if(isNull(groupCnt) && isNull(actCnt)) {
-            ProducerManager.sendGroupMsgs(topic, 3, 20);
+            if(!isNull(msg)){
+                ProducerManager.sendMsgs(topic, msg);
+            }else{
+                ProducerManager.sendGroupMsgs(topic, 3, 20);
+            }
+
         }else {
             ProducerManager.sendGroupMsgs(topic, Integer.valueOf(groupCnt), Integer.valueOf(actCnt));
         }
-
-        try {
-            producer = ProducerManager.getProducer(MessageHubContext.getProducerProperties(), topic);
-            ProducerManager.sendMsgs(topic ,msg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     private boolean isNull(String data) {
