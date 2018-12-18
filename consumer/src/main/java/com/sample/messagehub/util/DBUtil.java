@@ -46,7 +46,7 @@ public class DBUtil {
 
             conn = getConnection();
 
-            ps = conn.prepareStatement("select M_OFFSET, RETRY_COUNT from tb_msglog where M_PARTITION = ? and M_OFFSET = ? and GROUP_ID = ? and ACTIVITY_ID = ? and APP = ?");
+            ps = conn.prepareStatement("select M_OFFSET, RETRY_COUNT from msglog where M_PARTITION = ? and M_OFFSET = ? and GROUP_ID = ? and ACTIVITY_ID = ? and APP = ?");
             ps.setLong(1, group.getPartitionId());
             ps.setLong(2,  group.getOffset());
             ps.setInt(3, group.getGroupId());
@@ -59,7 +59,7 @@ public class DBUtil {
 
                 int retryCnt = rs.getInt("RETRY_COUNT");
 
-                ps2 = conn.prepareStatement("update tb_msglog set RETRY_COUNT = RETRY_COUNT + 1 where M_PARTITION = ? and M_OFFSET = ? and GROUP_ID = ? and ACTIVITY_ID = ? and APP = ?");
+                ps2 = conn.prepareStatement("update msglog set RETRY_COUNT = RETRY_COUNT + 1 where M_PARTITION = ? and M_OFFSET = ? and GROUP_ID = ? and ACTIVITY_ID = ? and APP = ?");
                 ps2.setLong(1, group.getPartitionId());
                 ps2.setLong(2, group.getOffset());
                 ps2.setInt(3, group.getGroupId());
@@ -70,7 +70,7 @@ public class DBUtil {
 
             }else {
 
-                ps2 = conn.prepareStatement("insert into tb_msglog(M_PARTITION, M_OFFSET, GROUP_ID, ACTIVITY_ID, RETRY_COUNT, DEMO_COMMAND, STATUS,  APP, APP_INST, INSERT_TIME) "
+                ps2 = conn.prepareStatement("insert into msglog(M_PARTITION, M_OFFSET, GROUP_ID, ACTIVITY_ID, RETRY_COUNT, DEMO_COMMAND, STATUS,  APP, APP_INST, INSERT_TIME) "
                         + "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, current_timestamp())");
 
                 ps2.setLong(1,  group.getPartitionId());
@@ -110,7 +110,7 @@ public class DBUtil {
         try {
             conn = getConnection();
 
-            ps = conn.prepareStatement("update tb_msglog set status = ? where M_PARTITION = ? and M_OFFSET = ? and GROUP_ID = ? and ACTIVITY_ID = ? and APP = ?");
+            ps = conn.prepareStatement("update msglog set status = ? where M_PARTITION = ? and M_OFFSET = ? and GROUP_ID = ? and ACTIVITY_ID = ? and APP = ?");
             ps.setString(1, group.getStatus());
             ps.setLong(2, group.getPartitionId());
             ps.setLong(3, group.getOffset());
