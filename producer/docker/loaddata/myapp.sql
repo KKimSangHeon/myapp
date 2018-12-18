@@ -35,7 +35,7 @@ CREATE TABLE `msg` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE IF EXISTS `_msglog`
+DROP TABLE IF EXISTS `msglog`
 CREATE TABLE `msglog` (
   `ROW_ID` int(11) NOT NULL AUTO_INCREMENT,
   `M_PARTITION` int(11) NOT NULL,
