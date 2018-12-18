@@ -3,6 +3,7 @@ package org.sample.kafka.consumer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sample.messagehub.core.GroupInfo;
 import com.sample.messagehub.core.MessageHubContext;
+import com.sample.messagehub.util.DBUtil;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.Deserializer;
@@ -93,14 +94,14 @@ public class ConsumerRunnable implements Runnable {
                         group.setPartitionId(record.partition());
                         group.setOffset(offset);
                         group.setRetry_count(0);
-                        group.setApp("msgrelay");
+                        group.setApp("msgapp");
 
                         String hostname = InetAddress.getLocalHost().getHostName();
                         String[] splittedHostname = hostname.split("-");
                         group.setApp_inst(splittedHostname[splittedHostname.length -1]);
 
                         logger.info("Consumer Record: [" + record.topic() + ", " + record.partition() + "] : " + record.value() + ", " + offset);
-//                        DBUtil.insertLotActivity(group);
+                        DBUtil.insertGroupActivity(group);
 
 
                         kafkaConsumer.commitSync(Collections.singletonMap(partition, new OffsetAndMetadata(offset + 1)));

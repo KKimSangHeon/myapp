@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sample.messagehub.core.GroupInfo;
 import com.sample.messagehub.core.MessageHubContext;
+import com.sample.messagehub.util.DBUtil;
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.errors.TimeoutException;
@@ -99,14 +99,14 @@ public class ProducerManager {
 
                 try {
                     offset = kafkaProducer.send(record).get().offset();
-//                    DBUtil.insertSendLog(lot);
+                    DBUtil.insertSendLog(group);
                     logger.info("[ GROUP / ACT ] : " + group.getGroupId() + " / " + group.getActId());
                     msgCnt++;
 
                 }catch(Exception ex) {
                     logger.info("Send message faild " + ex.getMessage());
                     if(offset < 0) {
-                        logger.info("Send message faild : resend lot data " + message);
+                        logger.info("Send message faild : resend group data " + message);
                         ProducerRecord<Long, String> record2 = new ProducerRecord<Long, String>(topic, key_num, Long.valueOf(group.getGroupId()), message);
                     }
                 }
@@ -144,24 +144,24 @@ public class ProducerManager {
 
         for(int i=0;i<groupCnt;i++) {
             for(int j=0;j<actCnt;j++) {
-                GroupInfo lot = new GroupInfo(i+1);
-                msgs.add(lot);
+                GroupInfo group = new GroupInfo(i+1);
+                msgs.add(group);
             }
         }
 
-        msgs = shuffleLot(msgs);
+        msgs = shuffleGroup(msgs);
 
-        List<Integer> lots = new ArrayList<Integer>(groupCnt);
+        List<Integer> groups = new ArrayList<Integer>(groupCnt);
         for(int i=0 ; i< groupCnt; i++) {
-            lots.add(i, 1);
+            groups.add(i, 1);
         }
 
         for(GroupInfo GroupInfo : msgs) {
             int groupId = GroupInfo.getGroupId();
-            int actId = lots.get(groupId -1);
+            int actId = groups.get(groupId -1);
             GroupInfo.setActId(actId);
-            //			lots.add(lotId -1, actId+1);
-            lots.set(groupId-1, actId+1);
+            //			gruops.add(groupId -1, actId+1);
+            groups.set(groupId-1, actId+1);
 
             GroupInfo.setApp("sender");
             GroupInfo.setApp_inst(hostname.split("-")[2]);
@@ -171,7 +171,7 @@ public class ProducerManager {
         return msgs;
     }
 
-    public static List<GroupInfo> shuffleLot(List<GroupInfo> msgs) {
+    public static List<GroupInfo> shuffleGroup(List<GroupInfo> msgs) {
 
         Collections.shuffle(msgs);
 
@@ -182,8 +182,8 @@ public class ProducerManager {
 
         List<GroupInfo> msgs = ProducerManager.createMsgs(3, 20);
 
-        for(GroupInfo lot : msgs) {
-            logger.info("GROUP ID : " + lot.getGroupId() + " , ACT ID : " + lot.getActId());
+        for(GroupInfo group : msgs) {
+            logger.info("GROUP ID : " + group.getGroupId() + " , ACT ID : " + group.getActId());
         }
 
     }

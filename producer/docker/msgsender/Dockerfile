@@ -12,8 +12,8 @@ RUN rm -f /tmp/install/wlp-webProfile7-17.0.0.3.zip
 ADD msgsender.war /root/wlp/usr/servers/defaultServer/apps
 ADD server.xml /root/wlp/usr/servers/defaultServer
 
-#RUN mkdir -p /root/wlp/usr/servers/defaultServer/jdbc
-#ADD mysql-connector-java-5.1.44-bin.jar /root/wlp/usr/servers/defaultServer/jdbc
+RUN mkdir -p /root/wlp/usr/servers/defaultServer/jdbc
+ADD mysql-connector-java-5.1.44-bin.jar /root/wlp/usr/servers/defaultServer/jdbc
 #ADD send /root/
 #RUN chmod +x /root/send
 

@@ -35,6 +35,23 @@ CREATE TABLE `msg` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+DROP TABLE IF EXISTS `_msglog`
+CREATE TABLE `msglog` (
+  `ROW_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `M_PARTITION` int(11) NOT NULL,
+  `M_OFFSET` bigint(20) NOT NULL,
+  `GROUP_ID` int(11) DEFAULT NULL,
+  `ACTIVITY_ID` int(11) DEFAULT NULL,
+  `RETRY_COUNT` int(11) DEFAULT NULL,
+  `DEMO_COMMAND` varchar(10) DEFAULT NULL,
+  `STATUS` varchar(10) DEFAULT NULL,
+  `APP` varchar(10) NOT NULL,
+  `APP_INST` varchar(10) DEFAULT NULL,
+  `CREATE_TIME` datetime DEFAULT NULL,
+  `INSERT_TIME` datetime DEFAULT NULL,
+  PRIMARY KEY (`ROW_ID`)
+);
+
 --
 -- Dumping data for table `msg`
 --
