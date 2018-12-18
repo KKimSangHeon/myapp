@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mariadb-pv-claim
-  namespace: myapp
+  namespace: $NAMESPACE
 spec:
   accessModes:
     - ReadWriteOnce

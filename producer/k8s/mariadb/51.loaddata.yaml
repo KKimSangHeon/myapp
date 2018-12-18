@@ -12,9 +12,9 @@ spec:
       restartPolicy: "Never"
       containers:
       - name: loaddata
-        image: mycluster.icp:8500/kafka/loaddata
+        image: mycluster.icp:8500/myapp/loaddata
         imagePullPolicy: Always
         env:
         - name: DB_HOST
-          value: mariadb.kafka.svc.cluster.local
+          value: mariadb.myapp.svc.cluster.local
         command: ["sh", "-c", "cat /root/myapp.sql | mysql -h $DB_HOST -u root -ppassw0rd"]

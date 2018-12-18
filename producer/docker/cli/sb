@@ -1,0 +1,7 @@
+#!/bin/sh
+
+IMAGENAME=mycluster.icp:8500/myapp/cli
+
+docker build -t $IMAGENAME .
+docker login mycluster.icp:8500 -u admin -p admin
+docker push $IMAGENAME

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cli
+  namespace: myapp
+  labels:
+    app: cli
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cli
+  template:
+    metadata:
+      labels:
+        app: cli
+    spec:
+      containers:
+      - name: cli
+        image: mycluster.icp:8500/myapp/cli

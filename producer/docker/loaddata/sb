@@ -1,0 +1,12 @@
+#!/bin/sh
+
+version=latest
+if [ $# -eq 1 ]
+  then
+    version=$1
+fi
+
+IMAGENAME=mycluster.icp:8500/$NAMESPACE/loaddata:$version
+docker build -t $IMAGENAME .
+docker login mycluster.icp:8500 -u admin -p admin
+docker push mycluster.icp:8500/$NAMESPACE/loaddata:$version
