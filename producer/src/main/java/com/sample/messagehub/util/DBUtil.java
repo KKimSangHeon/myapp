@@ -39,8 +39,8 @@ public class DBUtil {
         try {
 
             conn = getConnection();
-            ps = conn.prepareStatement("insert into msglog(M_PARTITION, M_OFFSET, GROUP_ID, ACTIVITY_ID, RETRY_COUNT, DEMO_COMMAND, STATUS, RV_SUBJECT, APP, APP_INST, CREATE_TIME, INSERT_TIME) "
-                    + "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, current_timestamp(), current_timestamp())");
+            ps = conn.prepareStatement("insert into msglog(M_PARTITION, M_OFFSET, GROUP_ID, ACTIVITY_ID, RETRY_COUNT, DEMO_COMMAND, STATUS, APP, APP_INST, CREATE_TIME, INSERT_TIME) "
+                    + "values(?, ?, ?, ?, ?, ?, ?, ?, ?, current_timestamp(), current_timestamp())");
 
             ps.setLong(1,  group.getPartitionId());
             ps.setLong(2, group.getOffset());
@@ -49,8 +49,8 @@ public class DBUtil {
             ps.setInt(5,group.getRetry_count());
             ps.setString(6, "");
             ps.setString(7, group.getStatus());
-            ps.setString(9, group.getApp());
-            ps.setString(10,  group.getApp_inst());
+            ps.setString(8, group.getApp());
+            ps.setString(9,  group.getApp_inst());
 
             ps.execute();
 

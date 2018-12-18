@@ -71,7 +71,7 @@ public class DBUtil {
             }else {
 
                 ps2 = conn.prepareStatement("insert into msglog(M_PARTITION, M_OFFSET, GROUP_ID, ACTIVITY_ID, RETRY_COUNT, DEMO_COMMAND, STATUS,  APP, APP_INST, INSERT_TIME) "
-                        + "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, current_timestamp())");
+                        + "values(?, ?, ?, ?, ?, ?, ?, ?, ?, current_timestamp())");
 
                 ps2.setLong(1,  group.getPartitionId());
                 ps2.setLong(2, group.getOffset());
@@ -80,8 +80,8 @@ public class DBUtil {
                 ps2.setInt(5,group.getRetry_count());
                 ps2.setString(6, "");
                 ps2.setString(7, group.getStatus());
-                ps2.setString(9, group.getApp());
-                ps2.setString(10,  group.getApp_inst());
+                ps2.setString(8, group.getApp());
+                ps2.setString(9,  group.getApp_inst());
 
                 ps2.execute();
             }
