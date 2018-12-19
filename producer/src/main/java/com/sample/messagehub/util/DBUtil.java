@@ -55,7 +55,10 @@ public class DBUtil {
             ps.execute();
 
         }catch(Exception e) {
-            e.printStackTrace();
+            try{
+               conn = getConnection();
+                insertSendLog(group);
+            }catch(Exception ex){}
         }finally {
             try {
                 ps.close();

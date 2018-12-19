@@ -87,7 +87,12 @@ public class DBUtil {
             }
 
         }catch(Exception e) {
-            e.printStackTrace();
+            try{
+                conn = getConnection();
+                insertGroupActivity(group);
+
+            }catch(Exception ex){}
+
         }finally {
             try { if(ps != null) ps.close();	} catch (SQLException e) {}
             try { if(ps2 != null) ps2.close();	} catch (SQLException e) {}
